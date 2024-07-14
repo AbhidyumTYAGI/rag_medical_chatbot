@@ -51,7 +51,7 @@ To set up Nurse Joy on your local machine, follow these steps:
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/Abhidyum/medical_ai_RAG.git
+    git clone https://github.com/AbhidyumTYAGI/rag_medical_chatbot.git
     cd medical_ai_RAG
     ```
 
@@ -99,4 +99,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 If you have any questions or suggestions, feel free to reach out to us:
 
 - **Email**: tyagiabhidyum@gmail.com
-- **GitHub**: [Abhidyum](https://github.com/Abhidyum)
+- **GitHub**: [AbhidyumTYAGI](https://github.com/AbhidyumTYAGI)
