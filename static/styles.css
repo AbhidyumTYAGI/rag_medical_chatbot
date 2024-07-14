@@ -1,0 +1,47 @@
+/* Add your custom CSS here */
+.user_img {
+    width: 40px;
+    height: 40px;
+}
+
+.user_img_msg {
+    width: 40px;
+    height: 40px;
+}
+
+.msg_card_body {
+    overflow-y: auto;
+    height: calc(100vh - 250px);
+}
+
+.card-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+.type_msg {
+    color: #6c757d;
+    border-right: none;
+    width: 90%;
+}
+
+.input-group-text {
+    border-left: none;
+    background-color: #007bff;
+    color: white;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+}
+
+.send_btn {
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    padding-top: 5px;
+    border: none;
+}
+
+.send_btn:hover {
+    background-color: #0056b3;
+}

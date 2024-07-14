@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+    <style>
+        body {
+            background-color: #f0f9f0; /* Light green background */
+        }
+        .user_img, .user_img_msg {
+            width: 50px; /* Adjust image size */
+            height: 50px; /* Adjust image size */
+        }
+        .msg_card_body {
+            background-color: #f0f9f0; /* Light green background */
+            border-radius: 10px;
+            overflow-y: auto;
+            height: calc(100vh - 170px); /* Adjust chat height */
+            padding: 15px;
+        }
+        .msg_cotainer_send, .msg_cotainer {
+            max-width: 75%;
+            word-wrap: break-word;
+            padding: 10px; /* Add padding for spacing */
+        }
+        .msg_cotainer_send {
+            background-color: #DCF8C6; /* Light green for sent messages */
+            border-radius: 10px;
+            text-align: right;
+            margin-bottom: 10px; /* Adjust spacing */
+        }
+        .msg_cotainer {
+            background-color: #D2D5CD; /* Light gray for received messages */
+            border-radius: 10px;
+            text-align: left;
+            margin-bottom: 10px; /* Adjust spacing */
+        }
+        .input-group-text.send_btn {
+            background-color: #4CAF50; /* Dark green send button */
+            border-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        .input-group-text.send_btn:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        .msg_head {
+            background-color: #5cb85c; /* Greenish header */
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 10px 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* Ensure it's above other content */
+        }
+        .msg_head .user_info {
+            color: white;
+            font-size: 20px; /* Larger text size */
+            font-weight: bold; /* Bold text */
+            margin-left: 10px; /* Adjust spacing */
+        }
+        .msg_head .img_cont img {
+            width: 80px; /* Adjust image size */
+            height: 80px; /* Adjust image size */
+            margin-right: 10px; /* Adjust spacing */
+        }
+        .msg_head .online_icon {
+            position: absolute;
+            right: 5px;
+            top: 2px;
+            width: 10px;
+            height: 10px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            border: 2px solid white;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid h-100">
+        <div class="row justify-content-center h-100">
+            <div class="col-md-8 col-xl-6 chat">
+                <div class="card">
+                    <div class="card-header msg_head">
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="{{ url_for('static', filename='ai_icon.png') }}" class="rounded-circle user_img" width="120" height="120">
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info">
+                                <span style="color: #ffffff; font-size: 25px; font-weight: bold;">Nurse Joy: Your Personal Nurse</span>
+                                <p style="color: #ffffff; font-size: 17px;">How can I help you?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="messageFormeight" class="card-body msg_card_body">
+
+                    </div>
+                    <div class="card-footer">
+                        <form id="messageArea" class="input-group">
+                            <input type="text" id="text" name="msg" placeholder="Type your message..." autocomplete="off" class="form-control type_msg" required/>
+                            <div class="input-group-append">
+                                <button type="submit" id="send" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#messageArea").on("submit", function(event) {
+                var rawText = $("#text").val();
+
+                var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + rawText + '</div><div class="img_cont_msg"><img src="{{ url_for('static', filename='user_icon.png') }}" class="rounded-circle user_img_msg"></div></div>';
+
+                $("#text").val("");
+                $("#messageFormeight").append(userHtml);
+
+                $.ajax({
+                    data: {
+                        msg: rawText,
+                        context: $("#messageFormeight").html()  // Update context with current chat history
+                    },
+                    type: "POST",
+                    url: "/get",
+                }).done(function(data) {
+                    var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="{{ url_for('static', filename='ai_icon.png') }}" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data + '</div></div>';
+                    $("#messageFormeight").append($.parseHTML(botHtml));
+                });
+                event.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>
